@@ -1,6 +1,6 @@
 # ASTRA
 
-<p align="center"><img src="https://github.com/nullqore/ASTRA/blob/main/logos/intro.gif" width="100%" height="800"/></p>
+<p align="center"><img src="https://github.com/nullqore/ASTRA/blob/main/media/intro.gif" width="100%" height="800"/></p>
 
 ---
 > *_🚧Project under active development_*
