@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recon - ASTRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="three-canvas"></canvas>
+    <header class="main-header">
+        <div class="logo">ASTRA</div>
+        <div class="tagline">Attack Surface + Threat Reconnaissance Arsenal</div>
+    </header>
+    <div class="content-wrapper">
+        <section class="dashboard-section">
+            <div class="w-full max-w-7xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 id="recon-title" class="font-orbitron text-4xl font-bold animated-glow-text">Recon</h1>
+                        <p id="recon-project-name" class="text-gray-400"></p>
+                    </div>
+                    <a href="dashboard.html" class="px-6 py-3 modern-3d-button text-white">&larr; Back to Dashboard</a>
+                    <button id="back-to-projects-btn" class="px-6 py-3 modern-3d-button text-white">&larr; Return to Projects</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Tool Selection -->
+                    <div class="lg:col-span-1 recon-tool-list-container">
+                        <h2 class="font-orbitron text-2xl font-bold mb-4">Recon Modules</h2>
+                        <div id="recon-tool-list" class="space-y-3">
+                            <!-- Tools will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Live Output -->
+                    <div class="lg:col-span-2 recon-output-container">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="font-orbitron text-2xl font-bold">Live Output</h2>
+                            <div class="flex items-center space-x-4">
+                                <button id="start-recon-btn" class="px-8 py-3 modern-3d-button text-white font-bold" disabled>Start Recon</button>
+                                <button id="pause-recon-btn" class="hidden p-3 modern-3d-button text-white font-bold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                                </button>
+                                <button id="stop-recon-btn" class="hidden p-3 modern-3d-button text-white font-bold">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-stop-circle"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6"></rect></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="progress-output" class="p-4 bg-gray-800 rounded-lg mb-4 text-sm font-mono text-white"></div>
+                    <div id="live-output" class="flex-grow p-4 bg-gray-900 rounded-lg overflow-y-auto text-sm font-mono text-white" style="height: 750px;">
+                        &gt; Preparing to start reconnaissance...
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="recon.js"></script>
+</body>
+</html>
