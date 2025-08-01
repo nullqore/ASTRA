@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -64,4 +65,46 @@ func WriteFileLines(path string, lines []string) error {
 		fmt.Fprintln(writer, line)
 	}
 	return writer.Flush()
+}
+
+func CombineFiles(outputFile string, files ...string) error {
+	outFile, err := os.Create(outputFile)
+	if err != nil {
+		return err
+	}
+	defer outFile.Close()
+
+	writer := bufio.NewWriter(outFile)
+
+	for _, file := range files {
+		inFile, err := os.Open(file)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return err
+		}
+
+		scanner := bufio.NewScanner(inFile)
+		for scanner.Scan() {
+			fmt.Fprintln(writer, scanner.Text())
+		}
+		inFile.Close()
+		if err := scanner.Err(); err != nil {
+			return err
+		}
+	}
+
+	return writer.Flush()
+}
+
+func RunCommand(command string, logFunc func(string, string)) error {
+	cmd := exec.Command("bash", "-c", command)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		logFunc(fmt.Sprintf("Error running command: %s", err), "error")
+	}
+	return err
 }
