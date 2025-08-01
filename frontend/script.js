@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("SAAM Script Initializing");
+    console.log("ASTRA Script Initializing");
 
     const API_BASE_URL = 'http://localhost:8080';
     const mainView = document.getElementById('main-view');
