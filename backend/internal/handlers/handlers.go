@@ -12,7 +12,6 @@ import (
 )
 
 // --- Structs ---
-
 type CreateProjectRequest struct {
         ProjectName string `json:"projectName"`
 }
@@ -36,8 +35,15 @@ type Module struct {
         Locked      bool   `json:"locked"`
 }
 
-// --- Utility Functions ---
+type ProjectStats struct {
+	Domains    int `json:"domains"`
+	Wildcards  int `json:"wildcards"`
+	Subdomains int `json:"subdomains"`
+	URLs       int `json:"urls"`
+	JSURLs     int `json:"js_urls"`
+}
 
+// --- Utility Functions ---
 // findProjectRoot walks up from the current working directory to find the directory containing go.mod
 func findProjectRoot() (string, error) {
         dir, err := os.Getwd()
@@ -71,7 +77,6 @@ func getResultsDir() (string, error) {
 }
 
 // --- Handlers ---
-
 func CreateProjectHandler(w http.ResponseWriter, r *http.Request) {
         var req CreateProjectRequest
         if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -240,10 +245,39 @@ func RemoveTargetHandler(w http.ResponseWriter, r *http.Request) {
 func GetModulesHandler(w http.ResponseWriter, r *http.Request) {
         modules := []Module{
                 {Name: "Recon", Description: "Perform reconnaissance on targets.", Locked: false},
-                {Name: "Monitor", Description: "Monitor targets for changes.", Locked: false},
-                {Name: "Mindmap", Description: "Visualize project data.", Locked: false},
+                {Name: "Monitor", Description: "Monitor targets for changes.", Locked: true},
+                {Name: "Mindmap", Description: "Visualize project data.", Locked: true},
                 {Name: "Empty", Description: "A placeholder module.", Locked: true},
         }
         w.Header().Set("Content-Type", "application/json")
         json.NewEncoder(w).Encode(modules)
+}
+
+func GetProjectStatsHandler(w http.ResponseWriter, r *http.Request) {
+	projectName := strings.TrimPrefix(r.URL.Path, "/api/projects/")
+	projectName = strings.TrimSuffix(projectName, "/stats")
+
+	resultsDir, err := getResultsDir()
+	if err != nil {
+		http.Error(w, "Could not determine results directory", http.StatusInternalServerError)
+		return
+	}
+	projectPath := filepath.Join(resultsDir, projectName)
+
+	domains, _ := utils.ReadFileLines(filepath.Join(projectPath, "scope", "domain.txt"))
+	wildcards, _ := utils.ReadFileLines(filepath.Join(projectPath, "scope", "wildcard.txt"))
+	subdomains, _ := utils.ReadFileLines(filepath.Join(projectPath, "active", "active-subs.txt"))
+	urls, _ := utils.ReadFileLines(filepath.Join(projectPath, "urls", "active_urls.txt"))
+	jsUrls, _ := utils.ReadFileLines(filepath.Join(projectPath, "urls", "active-js-urls.txt"))
+
+	stats := ProjectStats{
+		Domains:    len(domains),
+		Wildcards:  len(wildcards),
+		Subdomains: len(subdomains),
+		URLs:       len(urls),
+		JSURLs:     len(jsUrls),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(stats)
 }
