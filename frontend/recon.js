@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data.progress) {
-                progressOutput.textContent = data.progress.substring(1); // Remove the carriage return.
+                progressOutput.textContent = data.progress.substring(1);
             } else if (data.log && data.log.includes('Probed')) {
                 progressOutput.textContent = data.log;
             }
@@ -128,9 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
             pauseReconBtn.classList.remove('hidden');
             stopReconBtn.classList.remove('hidden');
             isPaused = true;
-            pauseReconBtn.classList.add('text-blue-400'); // Add color when paused
+            pauseReconBtn.classList.add('text-blue-400');
             pauseReconBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
-        } else { // 'stopped' or any other state
+        } else {
             startReconBtn.classList.remove('hidden');
             pauseReconBtn.classList.add('hidden');
             stopReconBtn.classList.add('hidden');
