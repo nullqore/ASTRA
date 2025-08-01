@@ -120,7 +120,9 @@ go build -o bin/server cmd/server/main.go
 
 or
 
+# Install dependency
 go mod init
+# Run the server
 go run cmd/server/main.go
 
 ```
