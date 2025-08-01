@@ -1,8 +1,5 @@
 #!/bin/bash
-
-# This script installs all necessary tools for the SAAM project.
-
-# Function to print messages
+# installs all necessary tools for the ASTRA project.
 print_msg() {
     echo -e "\n[+] $1\n"
 }
@@ -10,6 +7,7 @@ print_msg() {
 # --- System Dependencies ---
 print_msg "Updating package lists and installing essential packages..."
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install -y wget unzip git python3-pip jq
 
 # --- Go Installation ---
@@ -67,11 +65,9 @@ git clone https://github.com/1ndianl33t/Gf-Patterns ~/tools/Gf-Patterns
 mkdir -p ~/.gf
 cp ~/tools/Gf-Patterns/*.json ~/.gf
 
-
 # --- Python-based Tools ---
 print_msg "Installing Python-based tools..."
-sudo pip3 install sqlmap mantra
-pip install waymore --break-system-packages
+sudo pip3 install sqlmap mantra waymore --break-system-packages
 
 print_msg "Installing LinkFinder..."
 git clone https://github.com/GerbenJavado/LinkFinder.git
@@ -80,13 +76,13 @@ sudo python3 setup.py install
 cd ..
 rm -rf LinkFinder
 
-print_msg "Installing LinkFinder..."
+print_msg "Installing Findomain..."
 curl -LO https://github.com/findomain/findomain/releases/latest/download/findomain-linux.zip
 unzip findomain-linux.zip
 chmod +x findomain
 sudo cp findomain /usr/local/bin/findomain && rm findomain-linux.zip
 
-print_msg "Installing LinkFinder..."
+print_msg "Installing SubDomainizer..."
 git clone https://github.com/nsonaniya2010/SubDomainizer.git ~/tools/subdomainizer
 pip3 install -r ~/tools/subdomainizer/requirements.txt --break-system-packages
 
@@ -105,6 +101,7 @@ print_msg "Installing Wappalyzer..."
 sudo apt install pipx
 pipx install wappalyzer
 pipx ensurepath
+
 print_msg "Installing subdominator..."
 pipx install subdominator
 
@@ -117,6 +114,7 @@ sudo cp ~/go/bin/* /usr/local/bin/
 
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install ./google-chrome-stable_current_amd64.deb
+rm -rf google-chrome-stable_current_amd64.deb
 
 git clone https://github.com/ameenmaali/urldedupe.git ~/tools/urldedupe
 sudo snap install cmake --classic
