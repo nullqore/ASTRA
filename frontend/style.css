@@ -61,7 +61,7 @@ body {
     color: #EAEAEA;
     text-align: center;
     text-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-    margin-bottom: 0.5rem; /* Space between title and tagline */
+    margin-bottom: 0.5rem;
 }
 
 .tagline-hero {
@@ -69,7 +69,7 @@ body {
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 0; /* Reset margin */
+    margin-top: 0;
 }
 
 .scroll-down-icon {
@@ -116,7 +116,6 @@ body {
     justify-content: space-between;
     align-items: center;
     background: rgba(10, 10, 26, 0.8);
-    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -148,12 +147,12 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding-bottom: 10rem; /* Pushes content up */
+    padding-bottom: 10rem;
 }
 
 .projects-section {
     padding: 6rem 2rem;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 .hidden-view {
@@ -339,7 +338,7 @@ h3 {
 }
 
 #target-list {
-    height: 240px; /* Adjust this value to comfortably fit about 5 items */
+    height: 240px;
     overflow-y: auto;
 }
 
@@ -425,7 +424,7 @@ h3 {
 }
 
 .modal-content {
-    max-width: 400px; /* Smaller width */
+    max-width: 400px;
 }
 
 .modal-overlay.hidden {
