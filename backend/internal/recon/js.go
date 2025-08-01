@@ -53,6 +53,7 @@ func RunJSScanner(projectName string, subtask *tasks.Subtask, logFunc func(strin
 	infoDir := filepath.Join(resultsDir, "info")
 	vulnDir := filepath.Join(resultsDir, "vuln")
 	endpointFile := filepath.Join(infoDir, "endpoint.txt")
+	goendpointFile := filepath.Join(infoDir, "goendpoint.txt")
 	mantraOutFile := filepath.Join(vulnDir, "mantra-out.txt")
 	nucleiOutFile := filepath.Join(vulnDir, "nuclei-exposure-out.txt")
 
@@ -68,7 +69,7 @@ func RunJSScanner(projectName string, subtask *tasks.Subtask, logFunc func(strin
 	// Tool 1: getjs
 	if _, err := os.Stat(httpxFile); err == nil {
 		logFunc("  -> Running getjs on httpx-subs.txt...", "")
-		cmd := exec.Command("bash", "-c", fmt.Sprintf("getJS -input %s", httpxFile))
+		cmd := exec.Command("bash", "-c", fmt.Sprintf("getJS -input %s --complete", httpxFile))
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			logFunc(fmt.Sprintf("  -> ⚠️ Error running getjs: %v. Output: %s", err, string(output)), "")
@@ -100,7 +101,7 @@ func RunJSScanner(projectName string, subtask *tasks.Subtask, logFunc func(strin
 	// Tool 3: Grep from all_urls.txt
 	if _, err := os.Stat(allUrlsFile); err == nil {
 		logFunc("  -> Grepping for .js files in all_urls.txt...", "")
-		cmd := exec.Command("bash", "-c", fmt.Sprintf("grep '\\.js$' %s", allUrlsFile))
+		cmd := exec.Command("bash", "-c", fmt.Sprintf(`cat %s | grep -P '\w+\.js(\?|$)'`, allUrlsFile))
 		output, err := cmd.CombinedOutput()
 		if err != nil {
 			// Don't log error if grep just doesn't find anything
@@ -141,14 +142,14 @@ func RunJSScanner(projectName string, subtask *tasks.Subtask, logFunc func(strin
 	}
 
 	// Tool 5: Custom js-scanner.py
-	logFunc("  -> Running custom js-scanner.py...", "")
-	jsScannerCmd := fmt.Sprintf("./js-scanner.py -f %s | grep -v \"URL\" | anew %s", activeJsUrlsFile, endpointFile)
+	logFunc("  -> Running golinkfinder on active JS URLs...", "")
+	jsScannerCmd := fmt.Sprintf("golinkfinder -l %s -o %s", activeJsUrlsFile, goendpointFile)
 	cmd = exec.Command("bash", "-c", jsScannerCmd)
 	output, err = cmd.CombinedOutput()
 	if err != nil {
-		logFunc(fmt.Sprintf("  -> ⚠️ Error running js-scanner.py: %v. Output: %s", err, string(output)), "")
+		logFunc(fmt.Sprintf("  -> ⚠️ Error running golinkfinder: %v. Output: %s", err, string(output)), "")
 	} else {
-		logFunc("  -> ✅ js-scanner.py completed.", "")
+		logFunc("  -> ✅ golinkfinder completed.", "")
 	}
 	logFunc("✅ Step 3/4: Endpoint and info gathering complete.", "completed")
 
@@ -231,7 +232,7 @@ func probeJSURLs(urls []string, logFunc func(string, string)) []string {
 	}
 
 	wg.Wait()
-	logFunc("\n", "") // Print a newline after probing is complete
+	logFunc("\n", "")
 	sort.Strings(activeURLs)
 	return activeURLs
 }
