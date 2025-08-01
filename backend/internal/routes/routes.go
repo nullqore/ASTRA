@@ -23,14 +23,12 @@ func corsMiddleware(next http.Handler) http.Handler {
 func SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
 
-	// Wrap individual handlers that need CORS
 	createProjectHandler := corsMiddleware(http.HandlerFunc(handlers.CreateProjectHandler))
 	getModulesHandler := corsMiddleware(http.HandlerFunc(handlers.GetModulesHandler))
 	
 	mux.Handle("/api/create-project", createProjectHandler)
 	mux.Handle("/api/modules", getModulesHandler)
 
-	// This handler needs special attention due to multiple methods and sub-routes
 	projectsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
 		if strings.HasSuffix(path, "/targets") {
