@@ -15,8 +15,8 @@ It provides a clean web-based user interface to manage security assessment proje
 
 | | |
 |:---:|:---:|
-| <strong>Index</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic1.png?raw=true" width="500" height="500" /> | <strong>Recon</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic2.png?raw=true" width="500" height="500" /> |
-| <strong>Attack</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic3.png?raw=true" width="500" height="500" /> | <strong>Report</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic4.png?raw=true" width="500" height="500" /> |
+| <strong>Index</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic1.png?raw=true" width="500" height="500" /> | <strong>Project</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic2.png?raw=true" width="500" height="500" /> |
+| <strong>Dashboard</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic3.png?raw=true" width="500" height="500" /> | <strong>Recon</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic4.png?raw=true" width="500" height="500" /> |
 
 ---
 
