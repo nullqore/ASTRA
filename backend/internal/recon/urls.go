@@ -34,7 +34,7 @@ func RunURLFinder(projectName string, subtask *tasks.Subtask, logFunc func(strin
 	httpxFile := filepath.Join(resultsDir, "httpx", "httpx-subs.txt")
 
 	activeTools := []string{"gau", "waybackurls", "urlfinder", "github-endpoints", "cariddi", "gourlex", "orwa", "waymore"}
-	httpxTools := []string{"hakrawler", "katana", "gospider"}
+	httpxTools := []string{"hakrawler", "gospider"}
 
 	// Process active.txt sequentially
 	if _, err := os.Stat(activeFile); os.IsNotExist(err) {
@@ -122,13 +122,13 @@ func runToolsOnFile(projectName, inputFile string, tools []string, logFunc func(
 			"waybackurls":      fmt.Sprintf("cat %s | waybackurls | anew -q %s", inputFile, outputFile),
 			"urlfinder":        fmt.Sprintf("urlfinder -list %s -all -silent -o %s", inputFile, outputFile),
 			"hakrawler":        fmt.Sprintf("cat %s | hakrawler -timeout 5 -d 3 | anew -q %s", inputFile, outputFile),
-			"katana":           fmt.Sprintf("katana -list %s -silent  -headless -d 6 -c 20 -jc -f qurl | anew -q %s", inputFile, outputFile),
-			"gospider":         fmt.Sprintf("gospider -S %s -t 100 -d 8 -c 10 | anew -q %s", inputFile, outputFile),
+	//		"katana":           fmt.Sprintf("katana -list %s -silent  -headless -d 6 -c 20 -jc -f qurl | anew -q %s", inputFile, outputFile),
+			"gospider":         fmt.Sprintf(`gospider -S %s -t 100 -d 8 -c 10 | grep -Eo 'https?://[^ ]+' | sed 's/]$//' | anew -q %s`, inputFile, outputFile),
 			"github-endpoints": fmt.Sprintf("while read -r line; do github-endpoints -d \"$line\" -raw -t %s -o github-endpoints_temp && cat github-endpoints_temp | anew -q %s && rm -f github-endpoints_temp; done < %s", githubToken, outputFile, inputFile),
 			"cariddi":          fmt.Sprintf("cat %s | cariddi -plain | anew -q %s", inputFile, outputFile),
 			"gourlex":          fmt.Sprintf("while read -r lines; do gourlex -t \"$lines\" -uO -s | anew -q %s; done < %s", outputFile, inputFile),
 			"orwa":             fmt.Sprintf("bash ~/tools/orwa.sh %s | egrep 'http|https' | anew -q %s", inputFile, outputFile),
-			"waymore":	    fmt.Sprintf("cat %s | waymore -mode U -p 5 -c ~/.config/waymore/config.yml -oU %s", inputFile, outputFile),
+	//		"waymore":	    fmt.Sprintf("cat %s | waymore -mode U -p 5 -c ~/.config/waymore/config.yml -oU %s", inputFile, outputFile),
 		}
 
 		cmdStr, ok := toolCmds[toolName]
@@ -181,7 +181,7 @@ func probeURLs(urls []string, logFunc func(string, string)) []string {
 	uaIndex := 0
 
 	transport := &http.Transport{
-		MaxIdleConns:        200,
+		MaxIdleConns:        100,
 		IdleConnTimeout:     30 * time.Second,
 		TLSHandshakeTimeout: 10 * time.Second,
 		DisableKeepAlives:   false,
