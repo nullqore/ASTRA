@@ -8,12 +8,13 @@ import (
 	"project-saam/backend/internal/tasks"
 	"strings"
 	"sync"
+
 	"github.com/gorilla/websocket"
 )
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // Allow all origins
+		return true
 	},
 }
 
@@ -40,7 +41,7 @@ func ReconStreamHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var project string // Keep track of the project for this connection
+	var project string
 
 	defer func() {
 		mu.Lock()
@@ -63,7 +64,7 @@ func ReconStreamHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println("Unmarshal error:", err)
 			continue
 		}
-		log.Printf("Received WebSocket request: %+v", req) // Added logging
+		log.Printf("Received WebSocket request: %+v", req)
 
 		project = req.Project
 		mu.Lock()
@@ -74,10 +75,10 @@ func ReconStreamHandler(w http.ResponseWriter, r *http.Request) {
 
 		switch req.Action {
 		case "start":
-			log.Printf("Attempting to start recon for project: %s with modules: %v", req.Project, req.Modules) // Added logging
+			log.Printf("Attempting to start recon for project: %s with modules: %v", req.Project, req.Modules)
 			if exists && task.Status == tasks.StatusRunning {
 				sendMessage(req.Project, "A task is already running for this project.", string(task.Status))
-				log.Printf("Task already running for project %s", req.Project) // Added logging
+				log.Printf("Task already running for project %s", req.Project)
 				continue
 			}
 			task = tasks.GetOrCreateTask(req.Project)
@@ -103,7 +104,7 @@ func ReconStreamHandler(w http.ResponseWriter, r *http.Request) {
 				})
 				// Final status update
 				task.SetStatus(tasks.StatusCompleted)
-				task.SetProgress("") // Clear progress on completion
+				task.SetProgress("")
 				sendMessage(req.Project, task.GetLog(), string(tasks.StatusCompleted))
 				log.Printf("Reconnaissance for project %s finished or stopped.", req.Project)
 			}()
