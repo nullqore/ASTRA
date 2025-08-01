@@ -3,15 +3,20 @@ package main
 import (
         "log"
         "net/http"
-        "strings"
         "project-saam/backend/internal/handlers"
         "project-saam/backend/internal/ws"
+        "strings"
         "github.com/joho/godotenv"
         "github.com/rs/cors"
 )
 
 func projectMux(w http.ResponseWriter, r *http.Request) {
         path := strings.TrimPrefix(r.URL.Path, "/api/projects/")
+
+        if strings.Contains(path, "/stats") {
+			handlers.GetProjectStatsHandler(w, r)
+			return
+		}
 
         if strings.Contains(path, "/targets") {
                 if r.Method == http.MethodPost {
@@ -45,18 +50,15 @@ func main() {
         mux.HandleFunc("/api/modules", handlers.GetModulesHandler)
         mux.HandleFunc("/ws", ws.ReconStreamHandler)
 
-        // Configure CORS options
         c := cors.New(cors.Options{
-                AllowedOrigins:   []string{"*"}, // Allow any origin
+                AllowedOrigins:   []string{"*"},
                 AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTIONS"},
                 AllowedHeaders:   []string{"*"},
                 AllowCredentials: true,
         })
 
-        // Wrap your main router with the CORS middleware
         handler := c.Handler(mux)
 
-        // Use the new handler to start the server
         log.Println("Server starting on :8080")
         log.Fatal(http.ListenAndServe(":8080", handler))
 }
