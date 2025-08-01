@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmNoBtn = document.getElementById('custom-confirm-no-btn');
 
     // --- Core Logic ---
-
     // Check for an active project. If none, redirect to the main page.
     const projectName = localStorage.getItem('activeProjectName');
     if (!projectName) {
@@ -197,9 +196,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    async function fetchProjectStats() {
+        try {
+            const stats = await fetchApi(`${API_BASE_URL}/api/projects/${projectName}/stats`);
+            document.getElementById('stats-scope').textContent = `${stats.wildcards}, ${stats.domains}`;
+            document.getElementById('stats-subdomains').textContent = stats.subdomains;
+            document.getElementById('stats-urls').textContent = stats.urls;
+            document.getElementById('stats-js-urls').textContent = stats.js_urls;
+        } catch (error) {
+            console.error('Failed to load project stats:', error);
+            showNotification('Could not load project stats.', true);
+        }
+    }
+
     // --- Initial Data Fetch ---
     fetchProjectDetails();
     fetchAndRenderModules();
+    fetchProjectStats();
 });
 
 async function fetchApi(url, options) {
