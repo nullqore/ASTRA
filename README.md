@@ -6,9 +6,17 @@
 > *_🚧Project under active development_*
 
 
+
 **ASTRA (`Attack Surface Threat Reconnaissance Arsenal`) is an automated security assessment and management platform designed to streamline and orchestrate the entire reconnaissance and initial vulnerability analysis workflow.**
 
 It provides a clean web-based user interface to manage security assessment projects, define scope, and run a series of powerful, open-source security tools in a structured and repeatable manner. The primary goal of ASTRA is to automate the tedious parts of a security assessment, allowing security professionals to focus on manual testing and deeper analysis.
+
+## ❯ DEMO
+
+| | |
+|:---:|:---:|
+| <strong>Index</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic1.png?raw=true" width="500" height="500" /> | <strong>Recon</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic2.png?raw=true" width="500" height="500" /> |
+| <strong>Attack</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic3.png?raw=true" width="500" height="500" /> | <strong>Report</strong><br><img src="https://github.com/nullqore/ASTRA/blob/main/media/pic4.png?raw=true" width="500" height="500" /> |
 
 ---
 
@@ -152,7 +160,6 @@ results/
 ```
 
 ---
-
 ## ❯ Disclaimer
 
 ASTRA is a tool intended for authorized security assessments and educational purposes only. Unauthorized scanning of networks and systems is illegal. The developers assume no liability and are not responsible for any misuse or damage caused by this program.
