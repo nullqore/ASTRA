@@ -40,7 +40,7 @@ type Task struct {
 	ProjectName string
 	Status      TaskStatus
 	LogBuffer   *bytes.Buffer
-	Progress    string // Add this line
+	Progress    string
 	PauseChan   chan bool
 	StopChan    chan bool
 	Subtasks    map[string]*Subtask
